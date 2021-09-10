@@ -6,7 +6,7 @@
     "prepare": "husky install",
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "start": "node dist/application.js",
+    "start": "node dist/Application.js",
     "build:start": "npm run build && npm start",
     "lint": "eslint . --ext .ts"
   },
