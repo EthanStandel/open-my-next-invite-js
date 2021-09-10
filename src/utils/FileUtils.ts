@@ -1,4 +1,4 @@
-import { terminalPrompt } from "./terminalPrompt";
+import { TerminalUtils } from "./TerminalUtils";
 
 import fs from "fs";
 
@@ -35,7 +35,7 @@ export const FileUtils = {
 
     if (fileExists && verifyOverwrite) {
       if (
-        (await terminalPrompt(`Overwrite "${path}"? (Y/n)\n`))
+        (await TerminalUtils.prompt(`Overwrite "${path}"? (Y/n)\n`))
           .toUpperCase()
           .startsWith("Y")
       ) {

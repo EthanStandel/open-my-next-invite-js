@@ -1,5 +1,5 @@
 import { CalendarClient } from "./clients/CalendarClient";
-import { openInBrowser } from "./utils/openInBrowser";
+import { BrowserUtils } from "./utils/BrowserUtils";
 
 const Application = {
   async main(): Promise<void> {
@@ -11,7 +11,7 @@ const Application = {
 
     if (videoCall?.uri) {
       console.log(`Opening up video call for "${meeting.summary}"`);
-      openInBrowser(videoCall.uri);
+      BrowserUtils.open(videoCall.uri);
     } else {
       console.error(`No video call found for "${meeting.summary}"`);
     }

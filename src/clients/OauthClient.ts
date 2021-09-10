@@ -1,15 +1,15 @@
 import { Environment } from "../environment";
+import { BrowserUtils } from "../utils/BrowserUtils";
 import { FileUtils } from "../utils/FileUtils";
-import { openInBrowser } from "../utils/openInBrowser";
-import { terminalPrompt } from "../utils/terminalPrompt";
+import { TerminalUtils } from "../utils/TerminalUtils";
 
 import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 
 const tokenStoragePath = "~/.open-my-next-invite-token";
 
-export const oauthClient: Promise<OAuth2Client> =
-  (async (): Promise<OAuth2Client> => {
+export const OauthClient = {
+  async create(): Promise<OAuth2Client> {
     const {
       client_secret,
       client_id,
@@ -34,9 +34,9 @@ export const oauthClient: Promise<OAuth2Client> =
       scope: Environment.googleCalendar.scopes,
     });
 
-    openInBrowser(authUrl);
+    BrowserUtils.open(authUrl);
 
-    const code = await terminalPrompt("Enter code: ");
+    const code = await TerminalUtils.prompt("Enter code: ");
 
     return await new Promise((resolve, reject) => {
       oauthClient.getToken(code, (error, token) => {
@@ -50,4 +50,5 @@ export const oauthClient: Promise<OAuth2Client> =
         }
       });
     });
-  })();
+  },
+};

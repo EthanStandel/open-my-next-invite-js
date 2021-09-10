@@ -1,4 +1,4 @@
-import { oauthClient } from "./oauthClient";
+import { OauthClient } from "./OauthClient";
 
 import type { calendar_v3 } from "googleapis";
 import { google } from "googleapis";
@@ -7,7 +7,7 @@ export const CalendarClient = {
   async getNextMeetingData(): Promise<calendar_v3.Schema$Event> {
     const calendar = google.calendar({
       version: "v3",
-      auth: await oauthClient,
+      auth: await OauthClient.create(),
     });
     return new Promise((resolve, reject) => {
       calendar.events.list(
