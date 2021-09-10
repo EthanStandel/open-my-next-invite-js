@@ -13,4 +13,8 @@ export const TerminalUtils = {
       });
     });
   },
+
+  argExists(...names: Array<string>): boolean {
+    return process.argv.some(arg => names.some(name => arg === name));
+  },
 };

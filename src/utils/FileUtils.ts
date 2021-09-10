@@ -19,6 +19,9 @@ export const FileUtils = {
       return path;
     }
   },
+  async deleteFile(path: string): Promise<void> {
+    fs.unlinkSync(this.transformPath(path));
+  },
   async fileExists(path: string): Promise<boolean> {
     return fs.existsSync(this.transformPath(path));
   },

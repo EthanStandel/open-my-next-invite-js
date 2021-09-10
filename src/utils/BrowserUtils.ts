@@ -8,7 +8,7 @@ export const BrowserUtils = {
       console.error(
         "Sorry, this app only supports auto-opening URLs with MacOS at the moment."
       );
-      console.log(`Please open this URL and login:\n${url}`);
+      console.log(`Please open this URL manually:\n${url}`);
     }
   },
 };

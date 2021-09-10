@@ -4,6 +4,7 @@ import { FileUtils } from "../utils/FileUtils";
 import { TerminalUtils } from "../utils/TerminalUtils";
 
 import { OAuth2Client } from "google-auth-library";
+import type { Credentials } from "google-auth-library";
 import { google } from "googleapis";
 
 const tokenStoragePath = "~/.open-my-next-invite-token";
@@ -21,12 +22,23 @@ export const OauthClient = {
       redirect_uri
     );
 
-    if (await FileUtils.fileExists(tokenStoragePath)) {
-      oauthClient.setCredentials(
-        JSON.parse(await FileUtils.getFile(tokenStoragePath))
-      );
+    if (TerminalUtils.argExists("--new-user", "-nu")) {
+      console.log("--new-user (-nu): Clearing user credentials");
+      await FileUtils.deleteFile(tokenStoragePath);
+    } else if (await FileUtils.fileExists(tokenStoragePath)) {
+      const credentials = JSON.parse(
+        await FileUtils.getFile(tokenStoragePath)
+      ) as Credentials;
+      if (new Date(credentials.expiry_date as number) > new Date()) {
+        oauthClient.setCredentials(
+          JSON.parse(await FileUtils.getFile(tokenStoragePath))
+        );
 
-      return oauthClient;
+        return oauthClient;
+      } else {
+        console.log("Client credentials expired.");
+        await FileUtils.deleteFile(tokenStoragePath);
+      }
     }
 
     const authUrl = oauthClient.generateAuthUrl({
@@ -44,7 +56,13 @@ export const OauthClient = {
           console.error("Failed to retrieve access token", error);
           reject(error);
         } else {
-          FileUtils.saveFile(tokenStoragePath, JSON.stringify(token));
+          if (TerminalUtils.argExists("--no-save", "-ns")) {
+            console.log(
+              "--no-save (-ns): Will not save credentials for later use"
+            );
+          } else {
+            FileUtils.saveFile(tokenStoragePath, JSON.stringify(token));
+          }
           oauthClient.setCredentials(token);
           resolve(oauthClient);
         }

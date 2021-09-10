@@ -16,7 +16,8 @@ const Application = {
       console.error(`No video call found for "${meeting.summary}"`);
     }
 
-    console.log("Closing application.");
+    console.log("Process complete.");
+    process.exit(); // needed due to exec'd browser tabs
   },
 };
 
