@@ -4,11 +4,13 @@ import type { calendar_v3 } from "googleapis";
 import { google } from "googleapis";
 
 export const CalendarClient = {
-  async getNextMeetingData(): Promise<calendar_v3.Schema$Event> {
-    const calendar = google.calendar({
+  calendar: (async () =>
+    google.calendar({
       version: "v3",
       auth: await OauthClient.create(),
-    });
+    }))(),
+  async getNextMeetingData(): Promise<calendar_v3.Schema$Event> {
+    const calendar = await this.calendar;
     return new Promise((resolve, reject) => {
       calendar.events.list(
         {

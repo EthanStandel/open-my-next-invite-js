@@ -7,7 +7,7 @@ import { OAuth2Client } from "google-auth-library";
 import type { Credentials } from "google-auth-library";
 import { google } from "googleapis";
 
-const tokenStoragePath = "~/.open-my-next-invite-token";
+const credentialsStoragePath = "~/.open-my-next-invite-credentials.json";
 
 export const OauthClient = {
   async create(): Promise<OAuth2Client> {
@@ -22,23 +22,19 @@ export const OauthClient = {
       redirect_uri
     );
 
+    oauthClient.on("tokens", credentials => {
+      FileUtils.saveFile(credentialsStoragePath, JSON.stringify(credentials));
+    });
+
     if (TerminalUtils.argExists("--new-user", "-nu")) {
       console.log("--new-user (-nu): Clearing user credentials");
-      await FileUtils.deleteFile(tokenStoragePath);
-    } else if (await FileUtils.fileExists(tokenStoragePath)) {
+      await FileUtils.deleteFile(credentialsStoragePath);
+    } else if (await FileUtils.fileExists(credentialsStoragePath)) {
       const credentials = JSON.parse(
-        await FileUtils.getFile(tokenStoragePath)
+        await FileUtils.getFile(credentialsStoragePath)
       ) as Credentials;
-      if (new Date(credentials.expiry_date as number) > new Date()) {
-        oauthClient.setCredentials(
-          JSON.parse(await FileUtils.getFile(tokenStoragePath))
-        );
-
-        return oauthClient;
-      } else {
-        console.log("Client credentials expired.");
-        await FileUtils.deleteFile(tokenStoragePath);
-      }
+      oauthClient.setCredentials(credentials);
+      return oauthClient;
     }
 
     const authUrl = oauthClient.generateAuthUrl({
@@ -51,8 +47,8 @@ export const OauthClient = {
     const code = await TerminalUtils.prompt("Enter code: ");
 
     return await new Promise((resolve, reject) => {
-      oauthClient.getToken(code, (error, token) => {
-        if (error || !token) {
+      oauthClient.getToken(code, (error, credentials) => {
+        if (error || !credentials) {
           console.error("Failed to retrieve access token", error);
           reject(error);
         } else {
@@ -61,9 +57,12 @@ export const OauthClient = {
               "--no-save (-ns): Will not save credentials for later use"
             );
           } else {
-            FileUtils.saveFile(tokenStoragePath, JSON.stringify(token));
+            FileUtils.saveFile(
+              credentialsStoragePath,
+              JSON.stringify(credentials)
+            );
           }
-          oauthClient.setCredentials(token);
+          oauthClient.setCredentials(credentials);
           resolve(oauthClient);
         }
       });
