@@ -18,9 +18,9 @@ Generally I built it for my own workflow.
 - Google Calendar
 - Zoom meetings
 
-It should sort-of work in some other workflows but there are definitely some caveats. For instance, if your meetings were Google Meet, it should still work _unless_ your Google Meet user is not the same as your Chrome user. In that case it'll open up the meeting but then you'll need to switch users. I also rely on the very nifty `open` command on MacOS for opening arbitrary links in a new tab of your default browser. For other systems I just tell you "hey please open this URL in your browser" which is not ideal. And then if you don't use Google Calendar you're SOL on support currently. You could try to share your calendar to a Gmail user but even that might require some modifications.
+It should sort-of work in some other workflows but there are definitely some caveats. For instance, if your meetings were Google Meet, it should still work _unless_ your Google Meet user is not the same as your Chrome user. In that case it'll open up the meeting but then you'll need to switch users. I also rely on the very nifty `open` command on MacOS for opening arbitrary links in a new tab of your default browser. For other systems I just tell you "hey please open this URL in your browser" which is obviously not ideal. And then if you don't use Google Calendar you're SOL on support currently. You could try to share your calendar to a Gmail user but even that might require some modifications.
 
-If you want some modifications for your workflow open an issue and we can try to work together on it 🙂
+If you want some modifications for your workflow open an issue and we can try to work on it together 🙂
 
 ## Build process
 
@@ -45,7 +45,7 @@ So easy, right? But seriously for GCP, vaguely what you need to do is...
 1. And then go _back_ to GCP
 1. Go to "APIs & Services" > "OAuth consent screen"
 1. Hit "MAKE EXTERNAL"
-1. And just declare the app as in testing and declare the users who you intend to log into this as
+1. And just declare the app as in-testing and declare the users who you intend to log into this as
 
 Simple, right? 🙃
 
