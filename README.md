@@ -4,7 +4,11 @@
 
 [Logitech's Logi Dock](https://www.logitech.com/en-us/products/personal-workspaces/logi-dock.html) caught my eye recently. It seemed like it could be a really cool addition to a home office, but as I started to compare the price for what it offered it just didn't add up. It's a conference speaker, USB C dock, and macro-keyboard with some cool integrated software for managing meetings.
 
-The thing is that I already have speakers, a USB C dock, and a [macro-keyboard](https://www.pikatea.com/collections/products/products/pikatea-leon-macropad-5x1-kit) (which has been gathering a lot of dust). The only thing I was really missing was their magic "go to meeting" button. And so I wrote "open-my-next-invite-js" 🤷‍♂️
+The thing is that I already have speakers, a USB C dock, and a [macro-keyboard](https://www.pikatea.com/collections/products/products/pikatea-leon-macropad-5x1-kit) (which has been gathering a lot of dust). The only thing I was really missing was their magic "go to meeting" button. And so I wrote "open-my-next-invite-js" 🤷‍♂️ For the other buttons available on the Logi Dock, they were pretty simple macro-bindings (for Zoom mic-toggle is just Shift+Cmd+A and vid-toggle is just Shift+Cmd+V).
+
+## Why -js?
+
+I want to rewrite this in something a little bit more native when I'm not working on a dozen other personal and professional projects. For me, right now, Node is just the easiest thing to get up and running quickly and simply.
 
 ## Who is this for?
 
@@ -47,7 +51,7 @@ Simple, right? 🙃
 
 ## Deploy process
 
-As for how I deployed this to a key on [my macro-board](https://www.pikatea.com/collections/products/products/pikatea-leon-macropad-5x1-kit), that's a few more steps that will be some what specific to your system and available tools.
+As for how I deployed this to a key on my [macro-board](https://www.pikatea.com/collections/products/products/pikatea-leon-macropad-5x1-kit), that's a few more steps that will be some what specific to your system and available tools.
 
 In my case, I used [this article](https://dev.to/adamlombard/macos-run-a-script-in-any-app-via-custom-hotkey-4n99) to bind the script to a _very obnoxious_ hotkey. I reccomend keeping the hotkey as obnoxious as possible so that you don't risk overwriting something you might actually want to use. I then bound that hotkey on my macro-board using it's default software, [Vial](https://get.vial.today/) (basically just a GUI QMK bundler).
 
