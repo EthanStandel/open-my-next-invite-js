@@ -56,3 +56,7 @@ As for how I deployed this to a key on my [macro-board](https://www.pikatea.com/
 In my case, I used [this article](https://dev.to/adamlombard/macos-run-a-script-in-any-app-via-custom-hotkey-4n99) to bind the script to a _very obnoxious_ hotkey. I reccomend keeping the hotkey as obnoxious as possible so that you don't risk overwriting something you might actually want to use. I then bound that hotkey on my macro-board using it's default software, [Vial](https://get.vial.today/) (basically just a GUI QMK bundler).
 
 If you want an easily bindable traditional keyboard I can heavily recommend Drop's Alt or Ctrl keyboards which have a very simple [web-based configurator](https://drop.com/mechanical-keyboards/configurator).
+
+## General Caveats
+
+This is a CMD utility and requires stdin input. It must be deployed to an environment that can accept that. However, if you just run the script from a terminal once and continue to use it regularly, you shouldn't ever really need a new token (because the refresh token will handle re-upping of your auth), and thus the stdin shouldn't _really_ be needed on a regular basis. I thought about wrapping this in an electron app that only needs a window sometimes but that seems like a lot to add to such a simple package. For now I'm leaving it as is and if it becomes problematic I'll consider adding that.
