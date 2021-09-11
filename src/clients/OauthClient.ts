@@ -22,8 +22,12 @@ export const OauthClient = {
       redirect_uri
     );
 
-    oauthClient.on("tokens", credentials => {
-      FileUtils.saveFile(credentialsStoragePath, JSON.stringify(credentials));
+    oauthClient.on("tokens", async credentials => {
+      await FileUtils.deleteFile(credentialsStoragePath);
+      await FileUtils.saveFile(
+        credentialsStoragePath,
+        JSON.stringify(credentials)
+      );
     });
 
     if (TerminalUtils.argExists("--new-user", "-nu")) {

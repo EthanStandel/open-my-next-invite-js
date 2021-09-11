@@ -1,7 +1,12 @@
 import { CalendarClient } from "./clients/CalendarClient";
 import { BrowserUtils } from "./utils/BrowserUtils";
+import { LoggingUtils } from "./utils/LoggingUtils";
 
 const Application = {
+  async bootstrap(): Promise<void> {
+    LoggingUtils.replaceLoggersWithDatestampPrepender();
+  },
+
   async main(): Promise<void> {
     const meeting = await CalendarClient.getNextMeetingData();
 
@@ -21,4 +26,4 @@ const Application = {
   },
 };
 
-Application.main();
+Application.bootstrap().then(() => Application.main());
