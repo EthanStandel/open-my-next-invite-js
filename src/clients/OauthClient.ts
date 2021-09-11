@@ -22,17 +22,31 @@ export const OauthClient = {
       redirect_uri
     );
 
+    // Save credentials file
     oauthClient.on("tokens", async credentials => {
-      await FileUtils.deleteFile(credentialsStoragePath);
-      await FileUtils.saveFile(
-        credentialsStoragePath,
-        JSON.stringify(credentials)
-      );
+      if (TerminalUtils.argExists("--no-save", "-ns")) {
+        console.log("--no-save (-ns): Will not save credentials for later use");
+      } else {
+        try {
+          await FileUtils.deleteFile(credentialsStoragePath);
+        } catch {
+          // Silent
+        }
+        await FileUtils.saveFile(
+          credentialsStoragePath,
+          JSON.stringify(credentials)
+        );
+      }
+      oauthClient.setCredentials(credentials);
     });
 
     if (TerminalUtils.argExists("--new-user", "-nu")) {
       console.log("--new-user (-nu): Clearing user credentials");
-      await FileUtils.deleteFile(credentialsStoragePath);
+      try {
+        await FileUtils.deleteFile(credentialsStoragePath);
+      } catch {
+        // silent fail, we don't care
+      }
     } else if (await FileUtils.fileExists(credentialsStoragePath)) {
       const credentials = JSON.parse(
         await FileUtils.getFile(credentialsStoragePath)
@@ -51,22 +65,11 @@ export const OauthClient = {
     const code = await TerminalUtils.prompt("Enter code: ");
 
     return await new Promise((resolve, reject) => {
-      oauthClient.getToken(code, (error, credentials) => {
+      oauthClient.getToken(code, async (error, credentials) => {
         if (error || !credentials) {
           console.error("Failed to retrieve access token", error);
           reject(error);
         } else {
-          if (TerminalUtils.argExists("--no-save", "-ns")) {
-            console.log(
-              "--no-save (-ns): Will not save credentials for later use"
-            );
-          } else {
-            FileUtils.saveFile(
-              credentialsStoragePath,
-              JSON.stringify(credentials)
-            );
-          }
-          oauthClient.setCredentials(credentials);
           resolve(oauthClient);
         }
       });
