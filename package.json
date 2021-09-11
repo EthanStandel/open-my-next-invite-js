@@ -1,5 +1,5 @@
 {
-  "name": "open-my-next-invite",
+  "name": "open-my-next-invite-js",
   "version": "0.0.0",
   "description": "A utility for managing Google calendar invites programatically.",
   "scripts": {
